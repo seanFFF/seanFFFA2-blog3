@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #smallImg {
+            width: 300px;
+            height: 300px;
+            background-image: url(./zhongli.jpg);
+            background-size: cover;
+        }
+        #smallDiv {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255, 0, 0, .2);
+            display: none;
+            position: absolute;
+        }
+
+        #bigDiv {
+            width: 600px;
+            height: 300px;
+            /* border: 1px solid red; */
+            position: absolute;
+            left: 300px;
+            top: 0px;
+            overflow: hidden;
+            display: none;
+        }
+
+        #bigImg {
+            width: 900px;
+            height: 900px;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div class="fang">
+        <div id="smallImg">
+            <div id="smallDiv"></div>
+        </div>
+
+        <div id="bigDiv">
+            <img src="./zhongli.jpg" alt="" id="bigImg">
+        </div>
+    </div>
+
+
+    <script>
+        // 1. Mouse over, small div (masking layer) and large div (area to show effect) appear
+        // Mouse out to hide small div, large div
+
+        let smallImg = document.getElementById("smallImg");
+        let smallDiv = document.getElementById("smallDiv");
+        let bigDiv = document.getElementById("bigDiv");
+        let bigImg = document.getElementById("bigImg");
+
+        smallImg.onmouseover = function(){
+            smallDiv.style.display = 'block';
+            bigDiv.style.display = 'block';
+        }
+        smallImg.onmouseout = function(){
+            smallDiv.style.display = 'none';
+            bigDiv.style.display = 'none';
+        }
+
+        // 2.1 Mouse bound to the occlusion layer 
+            // Mouse movement distance is greater than the movement distance of the masking layer 
+
+       // 3.Core: A ratio exists for the entire magnifying glass function
+        // small div / small image = large div / large image
+        // 100 / 300 = 300 / 900
+        // Analysis: size size --> conclusion: 3x --> is the distance to move
+
+        smallImg.onmousemove = function(e){
+            var e = e || window.event;
+            // console.log(e.clientX,e.clientY);
+            var x = e.clientX-50;
+            var y = e.clientY-50;
+            // Make a judgement on the range of movement
+            if(x>=200){
+                x=200;
+            }
+            if(x<=0){
+                x=0;
+            }
+            if(y>=200){
+                y=200;
+            }
+            if(y<=0){
+                y=0;
+            }
+
+            // Small div move distance
+            smallDiv.style.left = x+'px';
+            smallDiv.style.top = y+'px';
+            
+            // Large map movement distance
+            bigImg.style.left = -3*x+'px';
+            bigImg.style.top = -3*y+'px';
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
